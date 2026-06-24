@@ -346,6 +346,26 @@ footer ul a:hover{color:var(--sun)}
   .review-text{font-size:.95rem;}
   .review-btn{width:2.25rem;height:2.25rem;font-size:1.4rem;}
 }
+
+/* ===== Write-a-Review form ===== */
+.write-review-wrap{margin-top:52px;background:#fff;border-radius:20px;padding:40px;box-shadow:0 8px 32px rgba(14,61,58,.10)}
+.write-review-wrap h3{font-family:'Playfair Display',serif;font-size:1.55rem;font-weight:700;color:var(--teal-deep);margin-bottom:6px}
+.write-review-wrap .wrf-sub{color:var(--muted);font-size:.93rem;margin-bottom:24px}
+.star-pick{display:flex;flex-direction:row-reverse;justify-content:flex-end;gap:4px;margin-bottom:20px}
+.star-pick input{display:none}
+.star-pick label{font-size:2rem;color:#d1c5b8;cursor:pointer;transition:color .15s;line-height:1}
+.star-pick input:checked ~ label,.star-pick label:hover,.star-pick label:hover ~ label{color:var(--sun)}
+.star-pick input:checked + label{color:var(--sun)}
+.wrf-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.wrf-field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.wrf-field label{font-size:.83rem;font-weight:600;color:var(--ink);letter-spacing:.04em;text-transform:uppercase}
+.wrf-field input,.wrf-field textarea{width:100%;padding:11px 14px;border:1.5px solid #e0d9d1;border-radius:10px;font-family:'Poppins',sans-serif;font-size:.95rem;color:var(--ink);background:#faf7f3;outline:none;transition:border-color .2s}
+.wrf-field input:focus,.wrf-field textarea:focus{border-color:var(--teal)}
+.wrf-field textarea{resize:vertical;min-height:100px}
+.wrf-submit{background:linear-gradient(135deg,var(--sun),var(--orange));color:#1a0f06;font-weight:700;font-size:.97rem;padding:13px 32px;border-radius:999px;border:none;cursor:pointer;transition:transform .18s,box-shadow .18s;box-shadow:0 8px 22px rgba(226,97,28,.32)}
+.wrf-submit:hover{transform:translateY(-2px);box-shadow:0 14px 28px rgba(226,97,28,.45)}
+.wrf-success{display:none;text-align:center;padding:24px;color:var(--teal-deep);font-weight:600;font-size:1.05rem}
+@media(max-width:600px){.wrf-row{grid-template-columns:1fr}.write-review-wrap{padding:24px}}
 </style>
 </head>
 <body>
@@ -716,6 +736,42 @@ footer ul a:hover{color:var(--sun)}
     <button class="review-btn review-next" id="reviewNext" aria-label="Next review">&#8250;</button>
     <div class="review-dots" id="reviewDots"></div>
   </div>
+
+    <!-- Write a Review -->
+    <div class="wrap">
+      <div class="write-review-wrap">
+        <h3>Share Your Experience</h3>
+        <p class="wrf-sub">Loved the food? Let others know! Your review helps our community grow.</p>
+        <form id="writeReviewForm" action="https://formspree.io/f/xzdldygr" method="POST" novalidate>
+          <div class="wrf-field" style="margin-bottom:8px">
+            <label style="text-transform:uppercase;font-size:.83rem;font-weight:600;letter-spacing:.04em;color:var(--ink)">Your Rating</label>
+          </div>
+          <div class="star-pick" aria-label="Star rating">
+            <input type="radio" id="s5" name="rating" value="5"><label for="s5" title="5 stars">&#9733;</label>
+            <input type="radio" id="s4" name="rating" value="4"><label for="s4" title="4 stars">&#9733;</label>
+            <input type="radio" id="s3" name="rating" value="3"><label for="s3" title="3 stars">&#9733;</label>
+            <input type="radio" id="s2" name="rating" value="2"><label for="s2" title="2 stars">&#9733;</label>
+            <input type="radio" id="s1" name="rating" value="1"><label for="s1" title="1 star">&#9733;</label>
+          </div>
+          <div class="wrf-row">
+            <div class="wrf-field">
+              <label for="wrfName">Your Name</label>
+              <input type="text" id="wrfName" name="name" placeholder="First &amp; Last Name" required>
+            </div>
+            <div class="wrf-field">
+              <label for="wrfEmail">Email (not published)</label>
+              <input type="email" id="wrfEmail" name="email" placeholder="you@example.com" required>
+            </div>
+          </div>
+          <div class="wrf-field">
+            <label for="wrfReview">Your Review</label>
+            <textarea id="wrfReview" name="review" placeholder="Tell us about your visit &mdash; the food, the vibe, the service..." required></textarea>
+          </div>
+          <button type="submit" class="wrf-submit">Submit Review</button>
+        </form>
+        <p class="wrf-success" id="wrfSuccess">Thank you! Your review has been submitted.</p>
+      </div>
+    </div>
 </section>
 
 <!-- VISIT -->
@@ -828,6 +884,22 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
   resetAuto();
 })();
+
+  // Write-a-review form handler
+  (function(){
+    var form = document.getElementById('writeReviewForm');
+    if(!form) return;
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      var data = new FormData(form);
+      fetch(form.action, { method:'POST', body:data, headers:{ 'Accept':'application/json' } })
+        .then(function(r){
+          if(r.ok){ form.style.display='none'; document.getElementById('wrfSuccess').style.display='block'; }
+          else { alert('Oops! Something went wrong. Please try again.'); }
+        })
+        .catch(function(){ alert('Network error. Please check your connection.'); });
+    });
+  })();
 </script>
 </body>
 </html>
