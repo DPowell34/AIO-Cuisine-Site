@@ -17,7 +17,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 
 <!-- Preload the hero logo (LCP) to reduce Largest Contentful Paint -->
-     <link rel="preload" as="image" href="images/logo-full.png" fetchpriority="high"
+     <link rel="preload" as="image" href="images/logo-full.webp" fetchpriority="high" type="image/webp"
        imagesizes="(max-width:600px) 160px, (max-width:900px) 200px, 240px">     <!-- Preload the hero image so it paints fast (improves Largest Contentful Paint) -->
 <link rel="preload" as="image" href="images/tomahawk-1200.webp" type="image/webp"
       imagesrcset="images/tomahawk-800.webp 800w, images/tomahawk-1200.webp 1200w, images/tomahawk-1500.webp 1500w"
@@ -392,9 +392,14 @@ footer ul a:hover{color:var(--sun)}
 <header id="hdr">
   <div class="wrap nav">
     <a href="#home" class="brand">
-      <img src="images/logo-full.png" alt="All In One Caribbean Cuisine logo" width="610" height="380"
-        sizes="(max-width:600px) 160px, (max-width:900px) 200px, 240px"
-        decoding="async">
+      <picture>
+          <source type="image/webp"
+            srcset="images/logo-300.webp 300w, images/logo-400.webp 400w, images/logo-full.webp 610w"
+            sizes="(max-width:600px) 160px, (max-width:900px) 200px, 240px">
+          <img src="images/logo-full.png" alt="All In One Caribbean Cuisine logo" width="610" height="380"
+            sizes="(max-width:600px) 160px, (max-width:900px) 200px, 240px"
+            decoding="async">
+        </picture>
     </a>
     <nav class="nav-links" id="navlinks">
       <a href="#about">About</a>
@@ -426,9 +431,15 @@ footer ul a:hover{color:var(--sun)}
     <div class="logo-stage">
       <span class="smoke s1"></span><span class="smoke s2"></span><span class="smoke s3"></span>
       <span class="smoke s4"></span><span class="smoke s5"></span><span class="smoke s6"></span>
-      <img class="hero-logo" src="images/logo-full.png" alt="All In One Caribbean Cuisine" width="610" height="380" fetchpriority="high"
-        sizes="(max-width:600px) 80vw, (max-width:900px) 50vw, 240px"
-        decoding="async">
+      <picture>
+          <source type="image/webp"
+            srcset="images/logo-300.webp 300w, images/logo-400.webp 400w, images/logo-full.webp 610w"
+            sizes="(max-width:600px) 80vw, (max-width:900px) 50vw, 240px">
+          <img class="hero-logo" src="images/logo-full.png" alt="All In One Caribbean Cuisine"
+            width="610" height="380" fetchpriority="high"
+            sizes="(max-width:600px) 80vw, (max-width:900px) 50vw, 240px"
+            decoding="async">
+        </picture>
     </div>
     <h1 class="sr-only">All In One Caribbean Cuisine</h1>
     <p class="cuisine-tag" lang="es">Sabores auténticos del Caribe &amp; Cuba</p>
@@ -839,7 +850,10 @@ footer ul a:hover{color:var(--sun)}
 <footer>
   <div class="wrap foot-grid">
     <div class="foot-brand">
-      <img src="images/logo-full.png" alt="All In One Caribbean Cuisine" width="610" height="380" loading="lazy">
+      <picture>
+            <source type="image/webp" srcset="images/logo-300.webp 300w, images/logo-full.webp 610w" sizes="200px">
+            <img src="images/logo-full.png" alt="All In One Caribbean Cuisine" width="610" height="380" loading="lazy" decoding="async">
+          </picture>
       <p>Authentic Caribbean &amp; Cuban cuisine, cooked over fire and served with island warmth in Las Vegas.</p>
       <div class="socials">
         <a href="tel:+17027805130" aria-label="Phone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></a>
