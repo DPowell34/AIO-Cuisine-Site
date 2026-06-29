@@ -17,8 +17,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 
 <!-- Preload the hero logo (LCP) to reduce Largest Contentful Paint -->
-     <link rel="preload" as="image" href="images/logo-full.png" fetchpriority="high">
-     <!-- Preload the hero image so it paints fast (improves Largest Contentful Paint) -->
+     <link rel="preload" as="image" href="images/logo-full.png" fetchpriority="high"
+       imagesizes="(max-width:600px) 160px, (max-width:900px) 200px, 240px">     <!-- Preload the hero image so it paints fast (improves Largest Contentful Paint) -->
 <link rel="preload" as="image" href="images/tomahawk-1200.webp" type="image/webp"
       imagesrcset="images/tomahawk-800.webp 800w, images/tomahawk-1200.webp 1200w, images/tomahawk-1500.webp 1500w"
       imagesizes="100vw" fetchpriority="high">
@@ -392,7 +392,9 @@ footer ul a:hover{color:var(--sun)}
 <header id="hdr">
   <div class="wrap nav">
     <a href="#home" class="brand">
-      <img src="images/logo-full.png" alt="All In One Caribbean Cuisine logo" width="610" height="380">
+      <img src="images/logo-full.png" alt="All In One Caribbean Cuisine logo" width="610" height="380"
+        sizes="(max-width:600px) 160px, (max-width:900px) 200px, 240px"
+        decoding="async">
     </a>
     <nav class="nav-links" id="navlinks">
       <a href="#about">About</a>
@@ -406,15 +408,8 @@ footer ul a:hover{color:var(--sun)}
     <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
   </div>
 </header>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-MGKZMNXYET"></script>
-<script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
 
-gtag('config', 'G-MGKZMNXYET');
-</script>
+
 
 <!-- HERO -->
 <section class="hero" id="home">
@@ -431,7 +426,9 @@ gtag('config', 'G-MGKZMNXYET');
     <div class="logo-stage">
       <span class="smoke s1"></span><span class="smoke s2"></span><span class="smoke s3"></span>
       <span class="smoke s4"></span><span class="smoke s5"></span><span class="smoke s6"></span>
-      <img class="hero-logo" src="images/logo-full.png" alt="All In One Caribbean Cuisine" width="610" height="380" fetchpriority="high">
+      <img class="hero-logo" src="images/logo-full.png" alt="All In One Caribbean Cuisine" width="610" height="380" fetchpriority="high"
+        sizes="(max-width:600px) 80vw, (max-width:900px) 50vw, 240px"
+        decoding="async">
     </div>
     <h1 class="sr-only">All In One Caribbean Cuisine</h1>
     <p class="cuisine-tag" lang="es">Sabores auténticos del Caribe &amp; Cuba</p>
@@ -865,5 +862,14 @@ gtag('config', 'G-MGKZMNXYET');
   </div>
   <p class="copy">© 2026 <span>All In One Caribbean Cuisine</span> · Las Vegas, NV · <span lang="es">Sabores auténticos del Caribe</span></p>
 </footer>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MGKZMNXYET"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+
+gtag('config', 'G-MGKZMNXYET');
+</script>
 </body>
 </html>
