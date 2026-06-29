@@ -1,16 +1,27 @@
-// nav scroll state
-const hdr=document.getElementById('hdr');
-addEventListener('scroll',()=>hdr.classList.toggle('scrolled',scrollY>40));
+// nav scroll state — passive listener avoids forced-reflow jank
+const hdr = document.getElementById('hdr');
+let ticking = false;
+window.addEventListener('scroll', () => {
+  if (!ticking) {
+    requestAnimationFrame(() => {
+      hdr.classList.toggle('scrolled', window.scrollY > 40);
+      ticking = false;
+    });
+    ticking = true;
+  }
+}, { passive: true });
+
 // mobile menu
-const burger=document.getElementById('burger'),links=document.getElementById('navlinks');
-burger.addEventListener('click',()=>{burger.classList.toggle('open');links.classList.toggle('open')});
-links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{burger.classList.remove('open');links.classList.remove('open')}));
+const burger = document.getElementById('burger'), links = document.getElementById('navlinks');
+burger.addEventListener('click', () => { burger.classList.toggle('open'); links.classList.toggle('open'); });
+links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { burger.classList.remove('open'); links.classList.remove('open'); }));
+
 // reveal on scroll
-const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.14});
-document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+const io = new IntersectionObserver((es) => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .14 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
 
-// ==================== REVIEWS CAROUSEL + SUBMIT ====================
+// =================== REVIEWS CAROUSEL + SUBMIT ===================
 (function(){
   var STORAGE_KEY = 'aio-user-reviews';
   var track = document.getElementById('reviewsTrack');
@@ -30,42 +41,43 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
     div.className = 'review-card';
     div.innerHTML =
       '<div class="review-stars">' + starsHTML(rating) + '</div>' +
-      '<p class="review-text">“' + text + '”</p>' +
+      '<p class="review-text">"' + text + '"</p>' +
       '<p class="review-author">— ' + name + '</p>';
     return div;
   }
 
-  // Load stored reviews from localStorage and inject into track
-  var stored = [];
-  try { stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch(e){}
-  stored.forEach(function(r){
-    track.appendChild(makeCard(r.name, r.rating, r.text));
-  });
-
-  // Carousel state
-  var current = 0;
-  var autoTimer;
-
+  // Build dot nav — batch all reads before writes to avoid forced reflow
   function buildDots(){
     dotsContainer.innerHTML = '';
     var cards = track.querySelectorAll('.review-card');
-    cards.forEach(function(_, i){
-      var dot = document.createElement('button');
-      dot.className = 'review-dot' + (i === 0 ? ' active' : '');
-      dot.setAttribute('aria-label', 'Review ' + (i+1));
-      dot.addEventListener('click', function(){ goTo(i); resetAuto(); });
-      dotsContainer.appendChild(dot);
-    });
+    // Read phase: collect card count
+    var cardCount = cards.length;
+    // Write phase: build dots fragment then append once
+    var frag = document.createDocumentFragment();
+    for (var i = 0; i < cardCount; i++) {
+      (function(idx){
+        var dot = document.createElement('button');
+        dot.className = 'review-dot' + (idx === 0 ? ' active' : '');
+        dot.setAttribute('aria-label', 'Review ' + (idx+1));
+        dot.addEventListener('click', function(){ goTo(idx); resetAuto(); });
+        frag.appendChild(dot);
+      })(i);
+    }
+    dotsContainer.appendChild(frag);
   }
 
+  var current = 0;
+  var autoTimer;
+
+  // goTo: read all layout values first, then write — eliminates forced reflow
   function goTo(idx){
     var cards = track.querySelectorAll('.review-card');
-    var total = cards.length;
-    current = ((idx % total) + total) % total;
+    var total = cards.length;               // read
+    var dots = dotsContainer.querySelectorAll('.review-dot'); // read
+    current = ((idx % total) + total) % total; // pure math
+    // Write phase (no reads after this point)
     track.style.transform = 'translateX(-' + (current * 100) + '%)';
-    dotsContainer.querySelectorAll('.review-dot').forEach(function(d, i){
-      d.classList.toggle('active', i === current);
-    });
+    dots.forEach(function(d, i){ d.classList.toggle('active', i === current); });
   }
 
   function resetAuto(){
